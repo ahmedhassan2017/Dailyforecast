@@ -3,6 +3,8 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
+
 
 }
 
@@ -16,6 +18,10 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+        buildConfigField("String", "API_BASE", "\"https://api.openweathermap.org/data/2.5/\"")
+        buildConfigField("String", "API_CITY", "\"https://dev-orcas.s3.eu-west-1.amazonaws.com/\"")
+        buildConfigField("String", "API_Key", "\"63db371aa4541f5e5d3a3e254cc34399\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
