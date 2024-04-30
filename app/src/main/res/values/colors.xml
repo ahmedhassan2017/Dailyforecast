@@ -6,4 +6,45 @@
     <color name="darkBlue">#004b7a</color>
     <color name="lightBlue">#7baab8</color>
     <color name="lightGray">#1A000000</color>
+    <color name="darkGrey">#4DFFFFFF</color>
+
+
+
+
+
+    <color name="grey">#FF535353</color>
+    <color name="darkGrey2">#3f4949</color>
+    <color name="darkGrey50">#7F333333</color>
+    <color name="green">#248751</color>
+    <color name="delete">#BD2230</color>
+
+
+    <color name="main">#369da3</color>
+    <color name="accent">#FFBE00</color>
+    <color name="main_bg">#f6f6f6</color>
+    <color name="text_hint">#9d9d9d</color>
+    <color name="text_light_grey">#a9a9a9</color>
+    <color name="editTexts_bg">#ececec</color>
+    <color name="icon_grey">#a4a4a4</color>
+    <color name="light_grey">#dcdcdc</color>
+    <color name="status_bar">#eef2f3</color>
+    <color name="QSA_grey">#7d7d7d</color>
+    <color name="chart_bar">#B1B1B1</color>
+    <color name="horizontal_line">#E4E4E4</color>
+    <color name="leader_bg">#edf2f3</color>
+
+
+    <color name="progressBackground">#E0E0E0</color>
+    <color name="progressColor">#00B0FF</color>
+    <color name="blackWhite">#9E9E9E</color>
+    <color name="loadingBackground">#0D000000</color>
+
+
+    <color name="nav_drawer_bg">#f3f3f3</color>
+    <color name="nav_drawer_text">#191919</color>
+    <color name="graph_label">#263238</color>
+    <color name="app_bar">#E9E9E9</color>
+    <color name="main_low_opacity">#EEF2F3</color>
+
+
 </resources>
