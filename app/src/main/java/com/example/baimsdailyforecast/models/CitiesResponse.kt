@@ -1,7 +1,7 @@
 package com.example.baimsdailyforecast.models
 
 data class CitiesResponse(
-        val cities: List<City1>
+        val cities: MutableList<City1>
 )
 
 data class City1(

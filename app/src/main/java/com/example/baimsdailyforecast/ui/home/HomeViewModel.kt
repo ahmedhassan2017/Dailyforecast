@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.baimsdailyforecast.data.remote.ApiResponse
 import com.example.baimsdailyforecast.models.CitiesResponse
+import com.example.baimsdailyforecast.models.City1
 import com.example.baimsdailyforecast.models.WeatherResponse
 import com.example.baimsdailyforecast.ui.home.repo.HomeRepo
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,7 @@ class HomeViewModel :ViewModel()
 {
 
     val weather = MutableLiveData<WeatherResponse?>()
-    val cities = MutableLiveData<CitiesResponse?>()
+    val cities = MutableLiveData<List<City1>?>()
     val error = MutableLiveData<String>()
     val isLoading = MutableLiveData<Boolean>()
 
@@ -48,7 +49,7 @@ class HomeViewModel :ViewModel()
 
             when{
                 res.isSuccess()->{
-                    cities.postValue(res.data)
+                    cities.postValue(res.data?.cities)
                     isLoading.postValue(false)
                 }
 
