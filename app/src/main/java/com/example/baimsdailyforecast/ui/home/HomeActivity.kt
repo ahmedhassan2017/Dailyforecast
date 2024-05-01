@@ -13,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
 import com.example.baimsdailyforecast.BuildConfig
+import com.example.baimsdailyforecast.R
 import com.example.baimsdailyforecast.data.db.AppDataBase
 import com.example.baimsdailyforecast.databinding.ActivityHomeBinding
 import com.example.baimsdailyforecast.models.City1
@@ -109,10 +110,7 @@ class HomeActivity : AppCompatActivity()
 
             } else
             {
-                binding.allView.visibility = View.GONE
-                binding.dataContainer.visibility = View.GONE
-                binding.retry.visibility = View.VISIBLE
-                Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
+                showError(it)
             }
         }
 
@@ -132,10 +130,7 @@ class HomeActivity : AppCompatActivity()
             Log.i("Ahmed", "Db cities: $it")
             if (it?.isEmpty() == true)
             {
-                binding.allView.visibility = View.GONE
-                binding.dataContainer.visibility = View.GONE
-                binding.retry.visibility = View.VISIBLE
-                Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
+                showError(getString(R.string.no_internet_connection))
                 return@observe
             }
 
@@ -172,6 +167,14 @@ class HomeActivity : AppCompatActivity()
         binding.retry.setOnClickListener {
             viewModel.getCities()
         }
+    }
+
+    private fun showError(message: String)
+    {
+        binding.allView.visibility = View.GONE
+        binding.dataContainer.visibility = View.GONE
+        binding.retry.visibility = View.VISIBLE
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
 
