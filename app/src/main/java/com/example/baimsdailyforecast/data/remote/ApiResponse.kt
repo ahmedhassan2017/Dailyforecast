@@ -14,7 +14,7 @@ class ApiResponse<T>(var data: T? = null, var error: ErrorResponse? = null, var 
     constructor(throwable: Throwable): this() {
         val errorMessage = if (throwable.message.isNullOrBlank()) {
             "Something went wrong"
-        } else if (throwable.message.toString().contains("failed to connect")||
+        } else if (throwable.message.toString().contains("Failed to connect")||
             throwable.message.toString().contains("timeout")) {
             "Check your internet connection"
         }

@@ -31,7 +31,7 @@ class DaysAdapter(private val  list: List<WeatherData>,val context: Context) :
 
        holder.binding.temp.text = list[position].main.temp.toCelsiusString()
         holder.binding.image
-            .setImageDrawable(AppCompatResources.getDrawable(context,getImageCondition(list[position])))
+            .setImageDrawable(AppCompatResources.getDrawable(context,getImageCondition(list[position].weather[0].main)))
 
 
 

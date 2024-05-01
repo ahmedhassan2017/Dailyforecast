@@ -72,6 +72,17 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
 
+    val room_version = "2.4.2"
+    implementation ("androidx.room:room-ktx:$room_version")
+    implementation ("androidx.room:room-rxjava3:$room_version")
+    implementation ("androidx.room:room-common:2.4.2")
+    implementation ("androidx.room:room-runtime:$room_version")
+    kapt ("androidx.room:room-compiler:$room_version")
+
+    implementation ("io.reactivex.rxjava3:rxandroid:3.0.0")
+    implementation ("io.reactivex.rxjava3:rxjava:3.0.0")
+
+
     // images
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation("jp.wasabeef:picasso-transformations:2.4.0")

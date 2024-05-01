@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/background"
@@ -11,17 +11,36 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".ui.home.HomeActivity">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/internet_warning"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:visibility="gone"
+
+        style="@style/FontLocalizedNormal"
+        android:background="@drawable/filled_error_rounded_border"
+        android:text="Data will not be accurate as no internet connection"
+        android:textColor="@color/white"
+        android:gravity="center"
+        />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/allView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-
             android:padding="16dp">
 
             <TextView
@@ -81,11 +100,11 @@
 
             <LinearLayout
                 android:id="@+id/dataContainer"
-                android:visibility="gone"
-                tools:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -169,3 +188,63 @@
     </ScrollView>
 
 </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/loading_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/lightGray"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible"
+        tools:visibility="gone">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/ic_loading"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.58000004"
+            app:lottie_autoPlay="true"
+            app:lottie_fileName="lottie_loading.json"
+            app:lottie_loop="true" />
+
+        <TextView
+            android:id="@+id/loading_text"
+            style="@style/FontLocalizedNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/loading"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/white" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/retry"
+        style="@style/FontLocalizedBold"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/filled_light_gray_rounded_border"
+        android:gravity="center"
+        android:text="@string/retry"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+
+</RelativeLayout>

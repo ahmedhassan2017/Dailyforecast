@@ -70,8 +70,8 @@ object Utils
         return dayOfWeek.getDisplayName(java.time.format.TextStyle.FULL, Locale.ENGLISH)
     }
 
-    fun getImageCondition(weather: WeatherData):Int{
-        weather.weather[0].main.let { weatherMain ->
+    fun getImageCondition(weatherMain: String):Int{
+       weatherMain.let { weatherMain ->
             val drawableResId = when {
                 weatherMain.contains("Rain", ignoreCase = true) -> R.drawable.ic_cloud_rain
                 weatherMain.contains("Cloud", ignoreCase = true) -> R.drawable.ic_cloud
