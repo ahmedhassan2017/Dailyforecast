@@ -1,6 +1,5 @@
 package com.example.baimsdailyforecast.data.remote
 
-import com.example.baimsdailyforecast.models.CitiesResponse
 import com.example.baimsdailyforecast.models.WeatherResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -17,12 +16,6 @@ interface ApiInterface
             @Query("lon") lon: Double,
             @Query("appid") apiKey: String
     ): Call<WeatherResponse>
-
-    /**
-     * Get cities JSON data.
-     */
-    @GET("uploads/cities.json")
-     fun getCitiesData(): Call<CitiesResponse>
 
 
 }

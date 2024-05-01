@@ -25,7 +25,9 @@ import com.example.baimsdailyforecast.utils.Utils.getFormattedDate
 import com.example.baimsdailyforecast.utils.Utils.getImageCondition
 import com.example.baimsdailyforecast.utils.Utils.greeting
 import com.example.baimsdailyforecast.utils.isNetworkAvailable
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity()
 {
     private var cities: List<City1>? = null

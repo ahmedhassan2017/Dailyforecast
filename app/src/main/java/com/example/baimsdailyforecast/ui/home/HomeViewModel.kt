@@ -8,7 +8,10 @@ import com.example.baimsdailyforecast.data.db.AppDataBase
 import com.example.baimsdailyforecast.models.WeatherDataDB
 import com.example.baimsdailyforecast.models.City1
 import com.example.baimsdailyforecast.models.WeatherResponse
-import com.example.baimsdailyforecast.ui.home.repo.HomeRepo
+import com.example.baimsdailyforecast.ui.home.repo.WeatherRepo
+import com.example.baimsdailyforecast.ui.home.usecases.getcities.ICitiesUseCase
+import com.example.baimsdailyforecast.ui.home.usecases.getweather.IWeatherUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.CompletableObserver
 import io.reactivex.rxjava3.core.SingleObserver
@@ -17,8 +20,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel()
+@HiltViewModel
+class HomeViewModel  @Inject constructor(val weatherUseCase:IWeatherUseCase,
+                                         val citiesUseCase: ICitiesUseCase) : ViewModel()
 {
 
     private lateinit var disposable: Disposable
@@ -36,7 +42,7 @@ class HomeViewModel : ViewModel()
         viewModelScope.launch(Dispatchers.IO) {
             isLoading.postValue(true)
 
-            val res = HomeRepo.getWeather(lat, lon, apiKey)
+            val res = weatherUseCase.getWeather(lat, lon, apiKey)
             if (!isActive) return@launch
             when
             {
@@ -55,11 +61,15 @@ class HomeViewModel : ViewModel()
         }
     }
 
+
+
+
+
     fun getCities()
     {
         isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val res = HomeRepo.getCities()
+            val res = citiesUseCase.getCities()
             if (!isActive) return@launch
 
             when
