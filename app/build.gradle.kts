@@ -114,6 +114,10 @@ dependencies {
 //mockito
     testImplementation("org.mockito:mockito-core:3.12.4")
     testImplementation("org.mockito:mockito-inline:3.12.4")
+//    testImplementation("org.mockito.kotlin:mockito-kotlin:4.2.0")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1")
+    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+    testImplementation ("io.mockk:mockk:1.12.0")
 
 
     testImplementation("junit:junit:4.13.2")

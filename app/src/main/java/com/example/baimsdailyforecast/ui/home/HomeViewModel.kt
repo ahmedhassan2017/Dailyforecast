@@ -8,85 +8,90 @@ import com.example.baimsdailyforecast.data.db.AppDataBase
 import com.example.baimsdailyforecast.models.WeatherDataDB
 import com.example.baimsdailyforecast.models.City1
 import com.example.baimsdailyforecast.models.WeatherResponse
-import com.example.baimsdailyforecast.ui.home.repo.HomeRepo
+import com.example.baimsdailyforecast.domain.usecases.getcities.ICitiesUseCase
+import com.example.baimsdailyforecast.domain.usecases.getweather.IWeatherUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.CompletableObserver
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import java.net.ConnectException
+import java.net.UnknownHostException
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel()
+@HiltViewModel
+class HomeViewModel @Inject constructor(val weatherUseCase: IWeatherUseCase, val citiesUseCase: ICitiesUseCase) : ViewModel()
 {
 
     private lateinit var disposable: Disposable
     val weather = MutableLiveData<WeatherResponse?>()
     val cities = MutableLiveData<List<City1>?>()
-
     val weatherDB = MutableLiveData<WeatherDataDB?>()
     val citiesDB = MutableLiveData<List<City1>?>()
-    val error = MutableLiveData<String>()
+    val weatherError = MutableLiveData<String>()
+    val weatherDBError = MutableLiveData<String>()
+    val citiesError = MutableLiveData<String>()
+
     val isLoading = MutableLiveData<Boolean>()
 
 
     fun getWeather(lat: Double, lon: Double, apiKey: String)
     {
         viewModelScope.launch(Dispatchers.IO) {
-            isLoading.postValue(true)
 
-            val res = HomeRepo.getWeather(lat, lon, apiKey)
-            if (!isActive) return@launch
-            when
-            {
-                res.isSuccess() ->
-                {
-                    weather.postValue(res.data)
-                    isLoading.postValue(false)
-                }
 
-                !res.isSuccess() ->
-                {
-                    error.postValue(res.error?.message)
+            weatherUseCase.getWeather(lat, lon, apiKey).onStart {
+                isLoading.postValue(true) }
+                .catch {e->
                     isLoading.postValue(false)
+                    when (e) {
+                        is ConnectException, is UnknownHostException -> {
+                            weatherError.postValue("No internet connection")
+                        }
+                        else -> {
+                            weatherError.postValue(e.message ?: "Unknown error occurred")
+                        }
+                    }
+
+                }.collect {
+                    isLoading.postValue(false)
+                    weather.postValue(it)
                 }
-            }
         }
     }
 
-    fun getCities()
-    {
+
+    fun getCities() {
         isLoading.postValue(true)
         viewModelScope.launch(Dispatchers.IO) {
-            val res = HomeRepo.getCities()
-            if (!isActive) return@launch
-
-            when
-            {
-                res.isSuccess() ->
-                {
-                    cities.postValue(res.data?.cities)
-                    isLoading.postValue(false)
+            citiesUseCase.getCities().onStart {
+                isLoading.postValue(true)
+            }.catch { e ->
+                isLoading.postValue(false)
+                when (e) {
+                    is ConnectException, is UnknownHostException -> {
+                        citiesError.postValue("No internet connection")
+                    }
+                    else -> {
+                        citiesError.postValue(e.message ?: "Unknown error occurred")
+                    }
                 }
-
-                !res.isSuccess() ->
-                {
-                    error.postValue(res.error?.message)
-                    isLoading.postValue(false)
-                }
+            }.collect { citiesResult ->
+                cities.postValue(citiesResult.cities)
+                isLoading.postValue(false)
             }
-
-
         }
     }
 
     // Using RX
     fun getDBCities(appDataBase: AppDataBase?)
     {
-        appDataBase?.citiesDao()?.getCities()
-            ?.subscribeOn(Schedulers.computation())
-            ?.observeOn(AndroidSchedulers.mainThread())
+        appDataBase?.citiesDao()?.getCities()?.subscribeOn(Schedulers.computation())?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe(object : SingleObserver<List<City1>>
             {
                 override fun onSubscribe(d: Disposable)
@@ -96,7 +101,7 @@ class HomeViewModel : ViewModel()
 
                 override fun onError(e: Throwable)
                 {
-                    error.postValue(e.message)
+                    citiesError.postValue(e.message)
                     disposable.dispose()
                 }
 
@@ -110,14 +115,11 @@ class HomeViewModel : ViewModel()
             })
 
 
-
     }
 
-    fun insertDBCities(appDataBase: AppDataBase?,list: List<City1>)
+    fun insertDBCities(appDataBase: AppDataBase?, list: List<City1>)
     {
-        appDataBase?.citiesDao()?.insertCity(list)
-            ?.subscribeOn(Schedulers.computation())
-            ?.subscribe(object : CompletableObserver
+        appDataBase?.citiesDao()?.insertCity(list)?.subscribeOn(Schedulers.computation())?.subscribe(object : CompletableObserver
             {
                 override fun onSubscribe(d: Disposable)
                 {
@@ -131,22 +133,20 @@ class HomeViewModel : ViewModel()
 
                 override fun onError(e: Throwable)
                 {
-                    error.postValue(e.message)
+                    citiesError.postValue(e.message)
                 }
 
 
             })
 
 
-
     }
 
-    fun getDBWeather(appDataBase: AppDataBase?, lat:Double, lon:Double)
+    fun getDBWeather(appDataBase: AppDataBase?, lat: Double, lon: Double)
     {
-        appDataBase?.weatherDao()?.getWeather(lat, lon)
-            ?.subscribeOn(Schedulers.computation())
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.subscribe(object : SingleObserver<WeatherDataDB>{
+        appDataBase?.weatherDao()?.getWeather(lat, lon)?.subscribeOn(Schedulers.computation())?.observeOn(AndroidSchedulers.mainThread())
+            ?.subscribe(object : SingleObserver<WeatherDataDB>
+            {
                 override fun onSubscribe(d: Disposable)
                 {
                     disposable = d
@@ -154,7 +154,7 @@ class HomeViewModel : ViewModel()
 
                 override fun onError(e: Throwable)
                 {
-                    error.postValue(e.message)
+                    weatherDBError.postValue(e.message)
                 }
 
                 override fun onSuccess(t: WeatherDataDB)
@@ -167,8 +167,8 @@ class HomeViewModel : ViewModel()
 
     fun insertDBWeather(appDataBase: AppDataBase?, weatherDataDB: WeatherDataDB)
     {
-        appDataBase?.weatherDao()?.insertWeather(weatherDataDB)   ?.subscribeOn(Schedulers.computation())
-            ?.subscribe(object : CompletableObserver{
+        appDataBase?.weatherDao()?.insertWeather(weatherDataDB)?.subscribeOn(Schedulers.computation())?.subscribe(object : CompletableObserver
+            {
                 override fun onSubscribe(d: Disposable)
                 {
                     disposable = d
@@ -181,10 +181,10 @@ class HomeViewModel : ViewModel()
 
                 override fun onError(e: Throwable)
                 {
-                    error.postValue(e.message)
+                    weatherDBError.postValue(e.message)
                 }
 
             })
-}
+    }
 
 }
