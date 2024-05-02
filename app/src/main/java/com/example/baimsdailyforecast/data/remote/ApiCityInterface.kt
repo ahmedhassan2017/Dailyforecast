@@ -13,7 +13,7 @@ interface ApiCityInterface
      * Get cities JSON data.
      */
     @GET("uploads/cities.json")
-     fun getCitiesData(): Call<CitiesResponse>
+     suspend fun getCitiesData(): CitiesResponse
 
 
 }

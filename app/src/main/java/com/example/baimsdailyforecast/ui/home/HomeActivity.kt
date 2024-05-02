@@ -30,6 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity()
 {
+    private lateinit var selectedCity: City1
     private var cities: List<City1>? = null
     private val cashIsEmpty: Boolean = true
     var appDataBase: AppDataBase? = null
@@ -102,19 +103,31 @@ class HomeActivity : AppCompatActivity()
         }
 
 
-        viewModel.error.observe(this) {
+        viewModel.weatherError.observe(this) {
             Log.i("TAG", "error: $it")
+
+            viewModel.getDBWeather(appDataBase,selectedCity.lat,selectedCity.lon)
+
+        }
+
+        viewModel.citiesError.observe(this){
 
             if (it.contains("connection"))
             {
-
                 viewModel.getDBCities(appDataBase)
-
-            } else
+            }
+            else
             {
                 showError(it)
             }
         }
+
+
+
+        viewModel.weatherDBError.observe(this){
+            showError(getString(R.string.no_internet_connection))
+        }
+
 
         viewModel.isLoading.observe(this) {
 
@@ -146,9 +159,7 @@ class HomeActivity : AppCompatActivity()
         viewModel.weatherDB.observe(this) {
             if (it == null)
             {
-                binding.allView.visibility = View.GONE
-                binding.dataContainer.visibility = View.GONE
-                binding.retry.visibility = View.VISIBLE
+                showError(getString(R.string.no_internet_connection))
                 return@observe
             }
 
@@ -191,10 +202,9 @@ class HomeActivity : AppCompatActivity()
 
 
                     setOnItemClickListener { _, _, position, _ ->
+                        selectedCity = cities[position]
                         Log.i("TAG", "Weather click: ${cities[position].id}")
-                        if (isNetworkAvailable(this@HomeActivity)) viewModel.getWeather(cities[position].lat, cities[position].lon,
-                            BuildConfig.API_Key)
-                        else viewModel.getDBWeather(appDataBase, cities[position].lat, cities[position].lon)
+                        viewModel.getWeather(cities[position].lat, cities[position].lon, BuildConfig.API_Key)
                     }
 
                 }

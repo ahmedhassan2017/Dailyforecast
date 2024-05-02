@@ -1,9 +1,9 @@
 package com.example.baimsdailyforecast.ui.home.repo
 
-import com.example.baimsdailyforecast.data.remote.ApiResponse
 import com.example.baimsdailyforecast.models.CitiesResponse
+import kotlinx.coroutines.flow.Flow
 
 interface ICityRepo
 {
-    fun getCities(): ApiResponse<CitiesResponse>
+    suspend fun getCities(): Flow<CitiesResponse>
 }
