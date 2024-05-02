@@ -1,6 +1,5 @@
-package com.example.baimsdailyforecast.ui.home.repo
+package com.example.baimsdailyforecast.domain.repo.weather
 
-import com.example.baimsdailyforecast.data.remote.ApiResponse
 import com.example.baimsdailyforecast.models.WeatherResponse
 import kotlinx.coroutines.flow.Flow
 

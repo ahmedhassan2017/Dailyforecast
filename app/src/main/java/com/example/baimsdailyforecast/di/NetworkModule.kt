@@ -34,8 +34,6 @@ object NetworkModule {
                     proceed(request().newBuilder().apply {
 
                         addHeader("Accept", "application/json")
-//                        addHeader("User-Agent", "Android/${BuildConfig.VERSION_CODE}")
-
 
                     }.build())
                 }
@@ -53,7 +51,6 @@ object NetworkModule {
      fun provideClient(interceptors : Array<Interceptor>): OkHttpClient
     {
         val builder = OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS)
-//            .cache(Cache(Application.appCacheDir, cacheSize.toLong()))
 
         for (interceptor in interceptors)
         {

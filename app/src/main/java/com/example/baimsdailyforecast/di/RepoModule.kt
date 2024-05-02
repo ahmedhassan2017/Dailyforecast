@@ -2,10 +2,10 @@ package com.example.baimsdailyforecast.di
 
 import com.example.baimsdailyforecast.data.remote.ApiCityInterface
 import com.example.baimsdailyforecast.data.remote.ApiInterface
-import com.example.baimsdailyforecast.ui.home.repo.CityRepo
-import com.example.baimsdailyforecast.ui.home.repo.ICityRepo
-import com.example.baimsdailyforecast.ui.home.repo.IWeatherRepo
-import com.example.baimsdailyforecast.ui.home.repo.WeatherRepo
+import com.example.baimsdailyforecast.domain.repo.cities.CityRepo
+import com.example.baimsdailyforecast.domain.repo.cities.ICityRepo
+import com.example.baimsdailyforecast.domain.repo.weather.IWeatherRepo
+import com.example.baimsdailyforecast.domain.repo.weather.WeatherRepo
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

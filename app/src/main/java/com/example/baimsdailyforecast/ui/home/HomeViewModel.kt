@@ -8,8 +8,8 @@ import com.example.baimsdailyforecast.data.db.AppDataBase
 import com.example.baimsdailyforecast.models.WeatherDataDB
 import com.example.baimsdailyforecast.models.City1
 import com.example.baimsdailyforecast.models.WeatherResponse
-import com.example.baimsdailyforecast.ui.home.usecases.getcities.ICitiesUseCase
-import com.example.baimsdailyforecast.ui.home.usecases.getweather.IWeatherUseCase
+import com.example.baimsdailyforecast.domain.usecases.getcities.ICitiesUseCase
+import com.example.baimsdailyforecast.domain.usecases.getweather.IWeatherUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.CompletableObserver

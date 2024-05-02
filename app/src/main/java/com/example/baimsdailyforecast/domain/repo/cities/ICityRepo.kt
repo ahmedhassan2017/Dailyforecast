@@ -1,4 +1,4 @@
-package com.example.baimsdailyforecast.ui.home.repo
+package com.example.baimsdailyforecast.domain.repo.cities
 
 import com.example.baimsdailyforecast.models.CitiesResponse
 import kotlinx.coroutines.flow.Flow
