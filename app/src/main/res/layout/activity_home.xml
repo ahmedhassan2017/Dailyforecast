@@ -7,7 +7,7 @@
     android:id="@+id/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_light"
+    android:background="@drawable/bg_night"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".ui.home.HomeActivity">
