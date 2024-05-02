@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.baimsdailyforecast.R
-import com.example.baimsdailyforecast.models.WeatherData
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -48,6 +47,13 @@ object Utils
         return timeOfDay
     }
 
+ fun getCairoTime(): Int
+    {
+        val timeOfDay =  Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+
+        return timeOfDay
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun getDrawableBasedOnTime(dateTimeString: String, context: Context): Drawable? {
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -76,7 +82,7 @@ object Utils
                 weatherMain.contains("Rain", ignoreCase = true) -> R.drawable.ic_cloud_rain
                 weatherMain.contains("Cloud", ignoreCase = true) -> R.drawable.ic_cloud
                 weatherMain.contains("Sun", ignoreCase = true) -> R.drawable.ic_sun
-                weatherMain.contains("Clear", ignoreCase = true) -> R.drawable.ic_moon
+                weatherMain.contains("Clear", ignoreCase = true)&& getCairoTime() in 7..16  -> R.drawable.ic_sun
                 else -> R.drawable.ic_moon // Default drawable
             }
             return drawableResId
